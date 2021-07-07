@@ -1,9 +1,4 @@
 ---
-output:
-  pdf_document: default
-  html_document: default
----
----------
 title: "weeklyAnalysis"
 author: "Pramodini Karwande"
 date: "7/6/2021"
@@ -23,8 +18,11 @@ library(ggplot2)
 library(readr)
 library(tidyverse)
 library(GGally)
-opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+library(caret)
+set.seed(1234)
 
+#opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+opts_chunk$set(echo = TRUE)
 include_graphics("./images/On-Bike-Share-rental-station.jpg")
 ```
 
@@ -37,32 +35,66 @@ Bike Sharing Dataset is a dataset of rental bikes between years 2011 and 2012 in
 The purpose of our analysis is the predication of bike rental count hourly or daily based on the environmental and seasonal settings. To predict the number of users, we need to perform description analysis to get variables we want to work with.
 
 ```{r}
-dayOfTheWeek = 0
+dayOfTheWeek = 1
 
 # read data
-bikeSharingData <- as.tibble(read.csv("./data/hour.csv"))
+bikeSharingData <- as.tibble(read.csv("./data/day.csv"))
 
-facCols <- c("season", "yr", "mnth", "hr", "holiday", "workingday", "weathersit")
-# Filter for the day of the week, remove weekday column
+# Filter for the day of the week, remove weekday column and convert columns to factor as appropriate.
+
+factorCols <- c("season", "yr", "mnth", "holiday", "workingday", "weathersit")
 bikeSharingData <-  bikeSharingData %>% 
-                    filter(weekday == 0) %>% 
+                    filter(weekday == dayOfTheWeek) %>% 
                     select(-weekday) %>% 
-                    mutate(across(facCols, factor))
+                    mutate(across(factorCols, factor))
+bikeSharingData <- drop_na(bikeSharingData)
 bikeSharingData
 
+#Divide Total Bike Sharing Data in Train (70%) and Test(30%) sets.
+train <- sample(1:nrow(bikeSharingData), size=0.7*nrow(bikeSharingData))
+bikeSharingTrainData <- bikeSharingData[train, ]
+bikeSharingTestData <- bikeSharingData[-train, ]
+
+#With extreme temperature do we observe less count?
 #Scatter plot of temp with cnt, registered, casual
-g <-  ggplot(bikeSharingData, aes(temp, cnt)) 
+g <-  ggplot(bikeSharingTrainData, aes(temp, cnt)) 
 g + geom_point()
 
+#With extreme feeling temperature do we observe less count?
 #Scatter plot of atemp with cnt, registered, casual
-g <-  ggplot(bikeSharingData, aes(atemp, cnt)) 
+g <-  ggplot(bikeSharingTrainData, aes(atemp, cnt)) 
 g + geom_point()
-#Scatter plot of hum with cnt, registered, casual
 
-#Scatter plot of windspeed with cnt, registered, casual
+#Do we see more count in other seasons compared with winter?
+#Boxplot of cnt by season
+g <- ggplot(bikeSharingTrainData, aes(season, cnt))
+g + geom_boxplot(fill="white") +
+  geom_jitter(size=1.5, alpha=0.2, aes(col=season)) +
+  labs(title="Boxplot for season")
 
-ggpairs(bikeSharingData[,-2], bin = 30)
-lmod <- lm(cnt ~., data = bikeSharingData[-2])
+
+#Do we see less count in extreme weather?
+#Boxplot of cnt by weathersit
+
+#Are cnt going up year by year?
+#BarPlot of cnt, casual & registered by year 
+
+#Are more regsitered counts higher in working day?
+#Bar of cnt, registered & casual by workingday
+
+#Are more casual counts higher in working day?
+#Bar of cnt, registered & casual by holiday
+
+#With extreme humidity do we observe less count?
+#Scatter plot of hum with cnt
+
+#With extreme windspeed do we observe less count?
+#Scatter plot of windspeed with cnt
+
+#Compute Summary Statistics
+
+#ggpairs(bikeSharingTrainData[,-2], bin = 30)
+lmod <- lm(cnt ~., data = bikeSharingTrainData[-2])
 summary(lmod)
 
 ```
@@ -83,4 +115,18 @@ Based on the summary of full linear regression model, we will proceed with analy
 9. registered: count of registered users
 
 
+```{r}
+#Random Forest Model
+#colnames(bikeSharingTrainData)
+#Remove instant & date column
+#bikeSharingTrainData <- bikeSharingTrainData[c(-1,-2)]
+rfFit <- train( cnt ~ season + yr + mnth + holiday + workingday + weathersit + atemp + hum + windspeed , 
+                data=bikeSharingTrainData,
+                method="rf",
+                trControl = trainControl(method="repeatedcv", number=10),
+                #preProcess= c("center","scale"),
+                tuneGrid = data.frame(mtry = 1:20))
+rfFit
+
+```
 
