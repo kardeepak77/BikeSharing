@@ -19,6 +19,8 @@ library(readr)
 library(tidyverse)
 library(GGally)
 library(caret)
+#install.packages("Metrics")
+library(Metrics)
 set.seed(1234)
 
 #opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
@@ -116,17 +118,25 @@ Based on the summary of full linear regression model, we will proceed with analy
 
 
 ```{r}
+results <- vector()
 #Random Forest Model
-#colnames(bikeSharingTrainData)
-#Remove instant & date column
-#bikeSharingTrainData <- bikeSharingTrainData[c(-1,-2)]
 rfFit <- train( cnt ~ season + yr + mnth + holiday + workingday + weathersit + atemp + hum + windspeed , 
                 data=bikeSharingTrainData,
                 method="rf",
                 trControl = trainControl(method="repeatedcv", number=10),
                 #preProcess= c("center","scale"),
                 tuneGrid = data.frame(mtry = 1:20))
-rfFit
+rfpred <- predict(rfFit, newdata = bikeSharingTestData)
+results <- rbind(results, postResample(rfpred, bikeSharingTestData$cnt)[1])
 
+#MLR Fit
+mlrFit <- lm(cnt ~ season + yr + weathersit + hum + windspeed + atemp , data=bikeSharingTrainData)
+
+pred <- predict(mlrFit, bikeSharingTestData)
+results <- rbind(results,sqrt(mean((bikeSharingTestData$cnt - pred)^2)))
+
+rownames(results) <- c("Radom Forest",  "MLR 1")
+colnames(results) <- c("RMSE")
+results
 ```
 
