@@ -46,7 +46,7 @@ bikeSharingData <- as.tibble(read.csv("./data/day.csv"))
 
 factorCols <- c("season", "yr", "mnth", "holiday", "workingday", "weathersit")
 bikeSharingData <-  bikeSharingData %>% 
-                    filter(weekday == dayOfTheWeek) %>% 
+                   # filter(weekday == dayOfTheWeek) %>% 
                     select(-weekday) %>% 
                     mutate(across(factorCols, factor))
 bikeSharingData <- drop_na(bikeSharingData)
@@ -77,6 +77,10 @@ g + geom_boxplot(fill="white") +
 
 #Do we see less count in extreme weather?
 #Boxplot of cnt by weathersit
+g <- ggplot(bikeSharingTrainData, aes(weathersit, cnt))
+g + geom_boxplot(fill="grey") +
+  geom_jitter(size=1.5, alpha=0.2, aes(col=weathersit)) +
+  labs(title="Boxplot for extreme weather")
 
 #Are cnt going up year by year?
 #BarPlot of cnt, casual & registered by year 
@@ -89,9 +93,13 @@ g + geom_boxplot(fill="white") +
 
 #With extreme humidity do we observe less count?
 #Scatter plot of hum with cnt
+g <-  ggplot(bikeSharingTrainData, aes(hum, cnt)) 
+g + geom_point()
 
 #With extreme windspeed do we observe less count?
 #Scatter plot of windspeed with cnt
+g <-  ggplot(bikeSharingTrainData, aes(windspeed, cnt)) 
+g + geom_point()
 
 #Compute Summary Statistics
 
