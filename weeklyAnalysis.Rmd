@@ -4,10 +4,6 @@ author: "Pramodini Karwande"
 date: "7/6/2021"
 allow_html: true
 output:
-  # html_document:  
-  #   toc: yes
-  #   toc_depth: 1
-  #   toc_float: yes  
   pdf_document:
     toc: yes
 ---
@@ -25,7 +21,7 @@ set.seed(1234)
 
 #opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 opts_chunk$set(echo = TRUE)
-include_graphics("./images/On-Bike-Share-rental-station.jpg")
+#include_graphics("./images/On-Bike-Share-rental-station.jpg")
 ```
 
 
@@ -110,6 +106,7 @@ summary(lmod)
 ```
 # Dataset Variables:
 Based on the summary of full linear regression model, we will proceed with analysis using below predictors:
+
 1. cnt: count of total rental bikes including both casual and registered. This will be the responce variable.
 2. yr : year (0: 2011, 1:2012)
 3. hr : hour (0 to 23)
@@ -124,6 +121,17 @@ Based on the summary of full linear regression model, we will proceed with analy
 8. casual: count of casual users
 9. registered: count of registered users
 
+
+
+## Idea of a Linear Regression Model
+
+Linear regression model is one of the supervised leaning methods. Using Linear regression both inference and predictions of response are possible outcomes.
+
+1. Inferencing allows identifying variables that are important for explaining variability in the response. Hypothesis testing, confidence interval of parameters help quantify/define such inference.
+
+2. Predicting response - Not worry about which variables are important in model, but focus on doing good job on predicting response.
+
+In Linear regression model, response is modeled as a linear function of predictor/explanatory variables. Model fitting/optimization is done using least squares as criteria. i.e. minimize sum of squares of residuals.
 
 ```{r}
 results <- vector()
