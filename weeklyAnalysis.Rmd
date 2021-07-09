@@ -3,7 +3,7 @@ title: "weeklyAnalysis"
 author: "Pramodini Karwande"
 date: "7/6/2021"
 params: 
-      dayOfTheWeek: 1
+      dayOfTheWeek: 2
 allow_html: true
 output:
   html_document:
@@ -174,21 +174,20 @@ mlrFit <- lm(cnt ~ season + yr + weathersit + hum + windspeed + atemp , data=bik
 pred <- predict(mlrFit, bikeSharingTestData)
 results <- rbind(results,sqrt(mean((bikeSharingTestData$cnt - pred)^2)))
 
-rownames(results) <- c("Radom Forest",  "MLR 1")
-colnames(results) <- c("RMSE")
-results
+#rownames(results) <- c("Radom Forest",  "MLR 1")
+#colnames(results) <- c("RMSE")
+
 ```
 
 ```{r}
 # Boosted Tree Model
-results2 <- c()
 trctrl_boost <- expand.grid(n.trees = 500,
                     shrinkage = 0.1,
                     interaction.depth = 4,
                     n.minobsinnode = 10
                     )
 
-boostFit <- train(cnt ~ weathersit + workingday + I(hum*atemp) + yr, data = bikeSharingTrainData, 
+boostFit <- train(cnt ~ weathersit + workingday + hum*atemp + yr, data = bikeSharingTrainData, 
                 method = "gbm",
                 trControl=trainControl(method = "repeatedcv", number = 10),
                 preProcess = c("center", "scale"),
@@ -197,18 +196,19 @@ boostFit <- train(cnt ~ weathersit + workingday + I(hum*atemp) + yr, data = bike
                 na.action = na.omit
                 )
 boostPred <- predict(boostFit, newdata = bikeSharingTestData)
-results2 <- rbind(results2, postResample(boostPred, bikeSharingTestData$cnt)[1])
+results <- rbind(results, postResample(boostPred, bikeSharingTestData$cnt)[1])
 
 
 #MLR2 Fit
-mlrFit2 <- lm(cnt ~ weathersit + workingday + atemp + hum + I(yr)^2, data=bikeSharingTrainData)
+mlrFit2 <- lm(cnt ~ weathersit + season + I(atemp)^2 + I(hum)^2 + I(windspeed) + yr, data=bikeSharingTrainData)
 
+colnames(bikeSharingTrainData)
 mlrPred <- predict(mlrFit2, bikeSharingTestData)
-results2 <- rbind(results2,sqrt(mean((bikeSharingTestData$cnt - mlrPred)^2)))
+results <- rbind(results,sqrt(mean((bikeSharingTestData$cnt - mlrPred)^2)))
 
-rownames(results2) <- c("Boosted Tree",  "MLR 2")
-colnames(results2) <- c("RMSE")
-results2
+rownames(results) <- c("Radom Forest",  "MLR 1", "Boosted Tree",  "MLR 2")
+colnames(results) <- c("RMSE")
+results
 
 ```
 
