@@ -22,9 +22,7 @@ library(Metrics)
 library(gbm)
 set.seed(1234)
 
-#opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
-opts_chunk$set(echo = TRUE)
-#include_graphics("./images/On-Bike-Share-rental-station.jpg")
+opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 ```
 ![](./images/On-Bike-Share-rental-station.jpg)
 
@@ -36,7 +34,7 @@ Bike Sharing Dataset is a dataset of rental bikes between years 2011 and 2012 in
 The purpose of our analysis is the predication of bike rental count hourly or daily based on the environmental and seasonal settings. To predict the number of users, we need to perform description analysis to get variables we want to work with.
 
 ```{r}
-#dayOfTheWeek = 1
+dayOfTheWeek = 2
 #params$dayOfTheWeek
 
 # read data
@@ -187,7 +185,7 @@ trctrl_boost <- expand.grid(n.trees = 500,
                     n.minobsinnode = 10
                     )
 
-boostFit <- train(cnt ~ weathersit + workingday + hum*atemp + yr, data = bikeSharingTrainData, 
+boostFit <- train(cnt ~ weathersit + atemp*windspeed  + hum*atemp + yr, data = bikeSharingTrainData, 
                 method = "gbm",
                 trControl=trainControl(method = "repeatedcv", number = 10),
                 preProcess = c("center", "scale"),
@@ -200,7 +198,9 @@ results <- rbind(results, postResample(boostPred, bikeSharingTestData$cnt)[1])
 
 
 #MLR2 Fit
-mlrFit2 <- lm(cnt ~ weathersit + season + I(atemp)^2 + I(hum)^2 + I(windspeed) + yr, data=bikeSharingTrainData)
+#mlrFit2 <- lm(cnt ~ weathersit + season + I(atemp**2) + I(hum**2) + I(windspeed**2) + yr, data=bikeSharingTrainData)
+
+mlrFit2 <- lm(cnt ~ weathersit + season*yr + atemp + hum + windspeed, data=bikeSharingTrainData)
 
 colnames(bikeSharingTrainData)
 mlrPred <- predict(mlrFit2, bikeSharingTestData)
