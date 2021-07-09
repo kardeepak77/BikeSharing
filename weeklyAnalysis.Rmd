@@ -17,6 +17,7 @@ library(GGally)
 library(caret)
 #install.packages("Metrics")
 library(Metrics)
+library(gbm)
 set.seed(1234)
 
 #opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
@@ -80,12 +81,18 @@ g + geom_boxplot(fill="grey") +
 
 #Are cnt going up year by year?
 #BarPlot of cnt, casual & registered by year 
+g <- ggplot(bikeSharingTrainData,aes(yr, cnt, fill = registered))
+g + geom_bar(position = "dodge", stat = "identity")
 
 #Are more regsitered counts higher in working day?
 #Bar of cnt, registered & casual by workingday
+g <- ggplot(bikeSharingTrainData,aes(workingday,registered, fill=yr))
+g + geom_bar(position = "dodge", stat = "identity")
 
 #Are more casual counts higher in working day?
 #Bar of cnt, registered & casual by holiday
+g <- ggplot(bikeSharingTrainData,aes(workingday,casual, fill=yr))
+g + geom_bar(position = "dodge", stat = "identity")
 
 #With extreme humidity do we observe less count?
 #Scatter plot of hum with cnt
@@ -159,4 +166,11 @@ rownames(results) <- c("Radom Forest",  "MLR 1")
 colnames(results) <- c("RMSE")
 results
 ```
+
+```{r}
+# Boosted Tree Model
+
+
+```
+
 
