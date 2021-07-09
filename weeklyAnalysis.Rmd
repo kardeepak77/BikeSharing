@@ -180,7 +180,7 @@ trctrl_boost <- expand.grid(n.trees = 500,
                     interaction.depth = 4,
                     n.minobsinnode = 10
                     )
-str(bikeSharingTrainData)
+
 boostFit <- train(cnt ~ weathersit + workingday + I(hum*atemp) + yr, data = bikeSharingTrainData, 
                 method = "gbm",
                 trControl=trainControl(method = "repeatedcv", number = 10),
