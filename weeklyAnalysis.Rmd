@@ -142,7 +142,12 @@ In Linear regression model, response is modeled as a linear function of predicto
 
 ## Idea of a Random Forest Model
 
-Random Forest is one of the ensemble model. 
+Random forest is Tree based ensembled method. It is extension of Bagging Method. In Bagging method we fit tree models on multiple bootstrap resamples. We then perform multiple predictions using each of the fit tree models and then average predictions obtained to come up with single prediction.
+Random forest extends idea of Bagging method, where rather than including every predictor, we include some set of randomly selected predictors in the model. It has following advantages - 
+
+1. This allows avoiding a strong predictor to overpower rest of the predictors.
+2. This also avoids multiple trees being similar or and hence predictions correlated to each other. Which in turn makes predictions independent and reduce variation prediction.
+
 
 ```{r}
 results <- vector()
