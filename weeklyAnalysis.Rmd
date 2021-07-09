@@ -2,9 +2,11 @@
 title: "weeklyAnalysis"
 author: "Pramodini Karwande"
 date: "7/6/2021"
+params: 
+      dayOfTheWeek: 1
 allow_html: true
 output:
-  pdf_document:
+  html_document:
     toc: yes
 ---
 
@@ -24,7 +26,7 @@ set.seed(1234)
 opts_chunk$set(echo = TRUE)
 #include_graphics("./images/On-Bike-Share-rental-station.jpg")
 ```
-
+![](./images/On-Bike-Share-rental-station.jpg)
 
 # Bike Sharing Introduction
 Bike sharing system is becoming popular now a days in the cities across the world. This allows users to rent bikes withing city for a limited time. Using latest technologies of bike sharing system, its easy for user to access dock from the system, rent bike from a particular position and return the bike to the nearest dock of the destination. _Bike Sharing System_ plays important role in traffic, environmental and health issues.Bike sharing programs have the potential to reduce the number of cars on the roads. Thus these systems promote healthy living and are environmentally friendly.
@@ -34,7 +36,8 @@ Bike Sharing Dataset is a dataset of rental bikes between years 2011 and 2012 in
 The purpose of our analysis is the predication of bike rental count hourly or daily based on the environmental and seasonal settings. To predict the number of users, we need to perform description analysis to get variables we want to work with.
 
 ```{r}
-dayOfTheWeek = 1
+#dayOfTheWeek = 1
+#params$dayOfTheWeek
 
 # read data
 bikeSharingData <- as.tibble(read.csv("./data/day.csv"))
@@ -43,7 +46,7 @@ bikeSharingData <- as.tibble(read.csv("./data/day.csv"))
 
 factorCols <- c("season", "yr", "mnth", "holiday", "workingday", "weathersit")
 bikeSharingData <-  bikeSharingData %>% 
-                   # filter(weekday == dayOfTheWeek) %>% 
+                    filter(weekday == params$dayOfTheWeek) %>% 
                     select(-weekday) %>% 
                     mutate(across(factorCols, factor))
 bikeSharingData <- drop_na(bikeSharingData)
@@ -107,8 +110,8 @@ g + geom_point()
 #Compute Summary Statistics
 
 #ggpairs(bikeSharingTrainData[,-2], bin = 30)
-lmod <- lm(cnt ~., data = bikeSharingTrainData[-2])
-summary(lmod)
+#lmod <- lm(cnt ~., data = bikeSharingTrainData[-2])
+#summary(lmod)
 
 ```
 # Dataset Variables:
