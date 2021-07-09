@@ -165,7 +165,34 @@ results
 
 ```{r}
 # Boosted Tree Model
+results2 <- c()
+trctrl_boost <- expand.grid(n.trees = 500,
+                    shrinkage = 0.1,
+                    interaction.depth = 4,
+                    n.minobsinnode = 10
+                    )
+str(bikeSharingTrainData)
+boostFit <- train(cnt ~ weathersit + workingday + I(hum*atemp) + yr, data = bikeSharingTrainData, 
+                method = "gbm",
+                trControl=trainControl(method = "repeatedcv", number = 10),
+                preProcess = c("center", "scale"),
+                tuneGrid   = trctrl_boost,
+                verbose = FALSE,
+                na.action = na.omit
+                )
+boostPred <- predict(boostFit, newdata = bikeSharingTestData)
+results2 <- rbind(results2, postResample(boostPred, bikeSharingTestData$cnt)[1])
 
+
+#MLR2 Fit
+mlrFit2 <- lm(cnt ~ weathersit + workingday + atemp + hum + I(yr)^2, data=bikeSharingTrainData)
+
+mlrPred <- predict(mlrFit2, bikeSharingTestData)
+results2 <- rbind(results2,sqrt(mean((bikeSharingTestData$cnt - mlrPred)^2)))
+
+rownames(results2) <- c("Boosted Tree",  "MLR 2")
+colnames(results2) <- c("RMSE")
+results2
 
 ```
 
