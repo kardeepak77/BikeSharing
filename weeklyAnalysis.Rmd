@@ -19,6 +19,7 @@ library(GGally)
 library(caret)
 library(Metrics)
 library(gbm)
+library(kableExtra)
 set.seed(1234)
 
 opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
@@ -120,14 +121,18 @@ g + geom_point()
 #lmod <- lm(cnt ~., data = bikeSharingTrainData[-2])
 #summary(lmod)
 
+# Contingency Table for year and season
+tbl <- table(bikeSharingData$yr, bikeSharingData$season)
+kable(tbl, caption = "Year and Season Information") %>% kable_styling()
 
-# Contingency Table for cnt and holiday
+# Contingency Table for weathersit and season
+tbl <- table(bikeSharingData$weathersit, bikeSharingData$season)
+kable(tbl, caption = "Weathersit and Season Information") %>% kable_styling()
+
+# Contingency Table for yr and holiday
 
 
-#Contingency Table for cnt and yr
-
-
-#Contingency Table for cnt, season
+# Contingency Table for workingday and season
 
 
 ```
