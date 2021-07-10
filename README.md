@@ -20,19 +20,19 @@ The purpose of this repository is to store **Bike Sharing Project** relevant fil
 
 # Reports for each day are as below:
 
-- ![Monday is available here]
+- [Monday is available here](MondayAnalysis.md)
 
-- ![Tuesday is available here]
+- [Tuesday is available here](TuesdayAnalysis.md)
 
-- ![Wednesday is available here]
+- [Wednesday is available here](WednesdayAnalysis.md)
 
-- ![Thursday is available here]
+- [Thursday is available here](ThursdayAnalysis.md)
 
-- ![Friday is available here]
+- [Friday is available here](FridayAnalysis.md)
 
-- ![Saturday is available here]
+- [Saturday is available here](SaturdayAnalysis.md)
 
-- ![Sunday is available here]
+- [Sunday is available here](SundayAnalysis.md)
  
 ```markdown
 Syntax highlighted code block
