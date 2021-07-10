@@ -178,6 +178,10 @@ results <- rbind(results,sqrt(mean((bikeSharingTestData$cnt - pred)^2)))
 
 ## Idea of a Boosted Tree Model
 
+_Boosted Tree is Tree based ensembled method_.We are using Boosted Tree Model to analyse our BikeSharing data and predict counts of Bike Rental. Boosting is really way to slowly trainer tree so model will not be really overfit. In a Boostin Tree Model, trees will be growing in a sequential model. Each created tree  is based on a previous one. Idea is to update predictions as we go. So when we fit our model, we get predictions. Based on that prediction We create a new model and then we update prediction based on the new model. 
+
+To apply this knowledge in our Boosted Tree Model method, initial prediction for every possible combination of values is zero. Then we are finding residulals for every observation. Next step, we are fitting model with d splits in it. For the first time fit of the tree, the residulal is our response and for subsequent run of this algorithms, new outcome of residulals is our response. Similarly, for first model fit, we are predicting and updating our predictions for subsequent runs of our model. Updating predictions is getting done by adding previous prediction multiplied by growth rate, i.e. tuning paramter. Below, we are using tuning paramter reasonably small(0.1), which helps to  move prediction slowly. And we are repeating this process number of times using repeatedcv method which  allow us to have a more accurate and robust accuracy of the cross-validation testing. This is how our trees will grow slowly, so data will not overfit. We are using cross validation to choose tuning paramter, splits and repeats to get optimium result.
+
 ```{r}
 # Boosted Tree Model
 trctrl_boost <- expand.grid(n.trees = 500,
