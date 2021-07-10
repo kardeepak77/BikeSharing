@@ -3,7 +3,7 @@ title: "weeklyAnalysis"
 author: "Pramodini Karwande"
 date: "7/6/2021"
 params: 
-      dayOfTheWeek: 2
+      dayOfTheWeek: 6
 allow_html: true
 output:
   html_document:
@@ -17,7 +17,6 @@ library(readr)
 library(tidyverse)
 library(GGally)
 library(caret)
-#install.packages("Metrics")
 library(Metrics)
 library(gbm)
 set.seed(1234)
@@ -34,7 +33,7 @@ Bike Sharing Dataset is a dataset of rental bikes between years 2011 and 2012 in
 The purpose of our analysis is the predication of bike rental count hourly or daily based on the environmental and seasonal settings. To predict the number of users, we need to perform description analysis to get variables we want to work with.
 
 ```{r}
-dayOfTheWeek = 2
+#dayOfTheWeek = 2
 #params$dayOfTheWeek
 
 # read data
@@ -176,6 +175,8 @@ results <- rbind(results,sqrt(mean((bikeSharingTestData$cnt - pred)^2)))
 #colnames(results) <- c("RMSE")
 
 ```
+
+## Idea of a Boosted Tree Model
 
 ```{r}
 # Boosted Tree Model
