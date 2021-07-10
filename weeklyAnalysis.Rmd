@@ -140,7 +140,7 @@ usersPerDay
 
 ```
 # Dataset Variables:
-Based on the summary of full linear regression model, we will proceed with analysis using below predictors:
+We will proceed with analysis using below predictors:
 
 1. cnt: count of total rental bikes including both casual and registered. This will be the responce variable.
 2. yr : year (0: 2011, 1:2012)
@@ -153,8 +153,7 @@ Based on the summary of full linear regression model, we will proceed with analy
 		- 4: Heavy Rain + Ice Pallets + Thunderstorm + Mist, Snow + Fog
 6. atemp: Normalized feeling temperature in Celsius. The values are divided to 50 (max)
 7. hum: Normalized humidity. The values are divided to 100 (max)
-8. casual: count of casual users
-9. registered: count of registered users
+8. season : season (1:springer, 2:summer, 3:fall, 4:winter)
 
 
 
