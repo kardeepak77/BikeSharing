@@ -9,6 +9,8 @@ The purpose of this repository is to store **Bike Sharing Project** relevant fil
 - library(tidyverse)
 - library(GGally)
 - library(caret)
+- library(Metrics)
+- library(gbm)
 
 
 # Code to create reports for each day of the week. 
