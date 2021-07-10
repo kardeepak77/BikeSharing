@@ -127,10 +127,16 @@ tbl <- table(bikeSharingData$weathersit, bikeSharingData$season)
 kable(tbl, caption = "Weathersit and Season Information") %>% kable_styling()
 
 # Contingency Table for yr and holiday
+tbl <- table(bikeSharingData$yr, bikeSharingData$holiday)
+kable(tbl, caption = "Year and Holiday Information") %>% kable_styling()
 
+# Bike Rental Counts per year
+usersPerYr <- bikeSharingData %>% group_by(bikeSharingData$yr) %>% summarise(sum(cnt))
+usersPerYr
 
-# Contingency Table for workingday and season
-
+# Bike Rental Counts per Day
+usersPerDay <- bikeSharingData %>% group_by(params$dayOfTheWeek) %>% summarise(mean(cnt))
+usersPerDay
 
 ```
 # Dataset Variables:
