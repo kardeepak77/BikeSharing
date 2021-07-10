@@ -1,6 +1,6 @@
 ---
 title: "weeklyAnalysis"
-author: "Pramodini Karwande"
+author: "Pramodini Karwande And Deepak Karawande"
 date: "7/6/2021"
 params: 
       dayOfTheWeek: 6
@@ -33,8 +33,6 @@ Bike Sharing Dataset is a dataset of rental bikes between years 2011 and 2012 in
 The purpose of our analysis is the predication of bike rental count hourly or daily based on the environmental and seasonal settings. To predict the number of users, we need to perform description analysis to get variables we want to work with.
 
 ```{r}
-#dayOfTheWeek = 2
-#params$dayOfTheWeek
 
 # read data
 bikeSharingData <- as.tibble(read.csv("./data/day.csv"))
@@ -47,7 +45,6 @@ bikeSharingData <-  bikeSharingData %>%
                     select(-weekday) %>% 
                     mutate(across(factorCols, factor))
 bikeSharingData <- drop_na(bikeSharingData)
-bikeSharingData
 
 #Divide Total Bike Sharing Data in Train (70%) and Test(30%) sets.
 train <- sample(1:nrow(bikeSharingData), size=0.7*nrow(bikeSharingData))
@@ -155,8 +152,18 @@ Random forest extends idea of Bagging method, where rather than including every 
 
 ```{r}
 results <- vector()
+
 #Random Forest Model
-rfFit <- train( cnt ~ season + yr + mnth + holiday + workingday + weathersit + atemp + hum + windspeed , 
+
+formula <- "";
+if(params$dayOfTheWeek %in% c(6,7))
+{
+  #remove holiday and workingday while modelig for Saturday & Sunday
+  formula <- as.formula("cnt ~ season + yr + mnth + weathersit + atemp + hum + windspeed")
+} else {
+  formula <- as.formula("cnt ~ season + yr + mnth + holiday + workingday + weathersit + atemp + hum + windspeed")
+}
+rfFit <- train( formula , 
                 data=bikeSharingTrainData,
                 method="rf",
                 trControl = trainControl(method="repeatedcv", number=10),
@@ -210,6 +217,10 @@ results <- rbind(results,sqrt(mean((bikeSharingTestData$cnt - mlrPred)^2)))
 rownames(results) <- c("Radom Forest",  "MLR 1", "Boosted Tree",  "MLR 2")
 colnames(results) <- c("RMSE")
 results
+
+weekdayNames <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
+
+paste0("Best performing model for ", weekdayNames[params$dayOfTheWeek], " is ", row.names(results)[which.min(results)])
 
 ```
 
