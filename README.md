@@ -1,7 +1,8 @@
 # Purpose of the Repository
 The purpose of this repository is to store **Bike Sharing Project** relevant files containing code to predict utilization of the bikes in the Washington DC during 2011-2012 and each file's revision history. Bike Sharing Project is a team project so using repository, its easy to maintain code in master branch for all the developers, update, pull, fetch, see the latest code updated by other teammates. _We have conducted EDA and model the utilization of the bikes in this project._
 
-# The following packages are used in Bike Sharing Project.
+
+# Packages are used in Bike Sharing Project.
 - library(knitr)
 - library(ggplot2)
 - library(readr)
@@ -9,26 +10,27 @@ The purpose of this repository is to store **Bike Sharing Project** relevant fil
 - library(GGally)
 - library(caret)
 
-# You'll find below code to create reports for each day of the week. 
+
+# Code to create reports for each day of the week. 
 
 
 
 
 # Reports for each day are as below:
 
-- Monday is available here
+- ![Monday is available here]
 
-- Tuesday is available here
+- ![Tuesday is available here]
 
-- Wednesday is available here
+- ![Wednesday is available here]
 
-- Thursday is available here
+- ![Thursday is available here]
 
-- Friday is available here
+- ![Friday is available here]
 
-- Saturday is available here
+- ![Saturday is available here]
 
-- Sunday is available here
+- ![Sunday is available here]
  
 ```markdown
 Syntax highlighted code block
