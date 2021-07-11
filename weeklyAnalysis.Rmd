@@ -58,85 +58,105 @@ train <- sample(1:nrow(bikeSharingData), size=0.7*nrow(bikeSharingData))
 bikeSharingTrainData <- bikeSharingData[train, ]
 bikeSharingTestData <- bikeSharingData[-train, ]
 
-#With extreme temperature do we observe less count?
+```
+
+# Summary Stats
+Inspect if with extreme temperature do we observe reduced count.
+```{r}
 #Scatter plot of temp with cnt, registered, casual
 g <-  ggplot(bikeSharingTrainData, aes(temp, cnt)) 
 g + geom_point()
+```
 
-#With extreme feeling temperature do we observe less count?
+Inspect if with extreme feeling temperature do we observe reduced count.
+
+```{r}
 #Scatter plot of atemp with cnt, registered, casual
 g <-  ggplot(bikeSharingTrainData, aes(atemp, cnt)) 
 g + geom_point()
+```
 
-#Do we see more count in other seasons compared with winter?
+Inspect if we find more count in other seasons compared to winter.
+```{r}
 #Boxplot of cnt by season
 g <- ggplot(bikeSharingTrainData, aes(season, cnt))
 g + geom_boxplot(fill="white") +
   geom_jitter(size=1.5, alpha=0.2, aes(col=season)) +
   labs(title="Boxplot for season")
+```
 
-
-#Do we see less count in extreme weather?
+Do we see less count in extreme weather?
+```{r}
 #Boxplot of cnt by weathersit
 g <- ggplot(bikeSharingTrainData, aes(weathersit, cnt))
 g + geom_boxplot(fill="grey") +
   geom_jitter(size=1.5, alpha=0.2, aes(col=weathersit)) +
   labs(title="Boxplot for extreme weather")
+```
 
-#Are cnt going up year by year?
+Are cnt going up year by year?
+```{r}
 #BarPlot of cnt, casual & registered by year 
 g <- ggplot(bikeSharingTrainData,aes(registered, cnt, fill = yr))
 g + geom_bar(position = "dodge", stat = "identity") +
   labs(title="Barplot for Year")
+```
 
-#Are more regsitered counts higher in working day?
+Are more regsitered counts higher in working day?
+```{r}
 #Bar of cnt, registered & casual by workingday
 g <- ggplot(bikeSharingTrainData,aes(workingday,registered, fill=yr))
 g + geom_bar(position = "dodge", stat = "identity") +
   labs(title="Barplot for Registered Users vs Working Day")
+```
 
-#Are more casual counts higher in working day?
+Are more casual counts higher in working day?
+```{r}
 #Bar of cnt, registered & casual by holiday
 g <- ggplot(bikeSharingTrainData,aes(workingday,casual, fill=yr))
 g + geom_bar(position = "dodge", stat = "identity")+
   labs(title="Barplot for Casual Users vs Working Day")
+```
 
-#With extreme humidity do we observe less count?
+With extreme humidity do we observe less count?
+```{r}
 #Scatter plot of hum with cnt
 g <-  ggplot(bikeSharingTrainData, aes(hum, cnt)) 
 g + geom_point() +
   labs(title="ScattePlot for Humidity vs Count")
-
-#With extreme windspeed do we observe less count?
+```
+With extreme windspeed do we observe less count?
+```{r}
 #Scatter plot of windspeed with cnt
 g <-  ggplot(bikeSharingTrainData, aes(windspeed, cnt)) 
 g + geom_point()
 
-#Compute Summary Statistics
-
-#ggpairs(bikeSharingTrainData[,-2], bin = 30)
-#lmod <- lm(cnt ~., data = bikeSharingTrainData[-2])
-#summary(lmod)
-
+```
+Are counts increasing for seasons year over year?
+```{r}
 # Contingency Table for year and season
 tbl <- table(bikeSharingData$yr, bikeSharingData$season)
 kable(tbl, caption = "Year and Season Information") %>% kable_styling()
+```
 
+Is there any variation with extreme weather across seasons?
+```{r}
 # Contingency Table for weathersit and season
 tbl <- table(bikeSharingData$weathersit, bikeSharingData$season)
 kable(tbl, caption = "Weathersit and Season Information") %>% kable_styling()
-
+```
+Are number of holidays same across years?
+```{r}
 # Contingency Table for yr and holiday
 tbl <- table(bikeSharingData$yr, bikeSharingData$holiday)
 kable(tbl, caption = "Year and Holiday Information") %>% kable_styling()
+```
 
+Inspect summary status of Cnt, Casual and Registered and see if for a given weekday proportion of casula and registered varies.
+```{r}
 # Bike Rental Counts per year
-usersPerYr <- bikeSharingData %>% group_by(bikeSharingData$yr) %>% summarise(sum(cnt))
-usersPerYr
+kable(apply(bikeSharingData[13:15], 2, summary), caption = paste("Summary of Cnt, Casual & Registered"), digit = 1)%>% kable_styling()
 
-# Bike Rental Counts per Day
-usersPerDay <- bikeSharingData %>% group_by(params$dayOfTheWeek) %>% summarise(mean(cnt))
-usersPerDay
 
 ```
 # Dataset Variables:
