@@ -3,7 +3,7 @@ title: "weeklyAnalysis"
 author: "Pramodini Karwande And Deepak Karawande"
 date: "7/6/2021"
 params: 
-      dayOfTheWeek: 6
+      dayOfTheWeek: 0
 allow_html: true
 output:
   html_document:
@@ -180,15 +180,15 @@ Random forest extends idea of Bagging method, where rather than including every 
 results <- vector()
 
 #Random Forest Model
-
 formula <- "";
-if(params$dayOfTheWeek %in% c(6,7))
+if(params$dayOfTheWeek %in% c(0,6))
 {
   #remove holiday and workingday while modelig for Saturday & Sunday
   formula <- as.formula("cnt ~ season + yr + mnth + weathersit + atemp + hum + windspeed")
 } else {
   formula <- as.formula("cnt ~ season + yr + mnth + holiday + workingday + weathersit + atemp + hum + windspeed")
 }
+
 rfFit <- train( formula , 
                 data=bikeSharingTrainData,
                 method="rf",

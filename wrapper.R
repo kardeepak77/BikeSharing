@@ -1,7 +1,6 @@
 
-weekday <- c("Monday.html", "Tuesday.html", "Wednesday.html", "Thursday.html", "Friday.html", "Saturday.html", "Sunday.html")
+weekday <- c("Sunday.html", "Monday.html", "Tuesday.html", "Wednesday.html", "Thursday.html", "Friday.html", "Saturday.html")
 
-for(i in 1:length(weekday)) {
-  rmarkdown::render("weeklyAnalysis.Rmd", output_file = weekday[i], 
-                  params = list(dayOfTheWeek = i))
+for(i in 0:(length(weekday)-1)) {
+  rmarkdown::render("weeklyAnalysis.Rmd", output_file = weekday[i+1], params = list(dayOfTheWeek = i))
 }
