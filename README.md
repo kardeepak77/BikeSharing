@@ -27,17 +27,17 @@ for(i in 0:(length(weekday)-1)) {
 
 # Reports for each day are as below:
 
-- The analysis for [Monday is available here](Monday.md)
+- The analysis for [Monday is available here](Monday)
 
-- The analysis for [Tuesday is available here](Tuesday.md)
+- The analysis for [Tuesday is available here](Tuesday)
 
-- The analysis for [Wednesday is available here](Wednesday.md)
+- The analysis for [Wednesday is available here](Wednesday)
 
-- The analysis for [Thursday is available here](Thursday.md)
+- The analysis for [Thursday is available here](Thursday)
 
-- The analysis for [Friday is available here](Friday.md)
+- The analysis for [Friday is available here](Friday)
 
-- The analysis for [Saturday is available here](Saturday.md)
+- The analysis for [Saturday is available here](Saturday)
 
-- The analysis for [Sunday is available here](Sunday.md)
+- The analysis for [Sunday is available here](Sunday)
  
