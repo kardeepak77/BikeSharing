@@ -63,7 +63,6 @@ bikeSharingTestData <- bikeSharingData[-train, ]
 # Summary Stats
 Inspect if with extreme temperature do we observe reduced count.
 ```{r}
-#Scatter plot of temp with cnt, registered, casual
 g <-  ggplot(bikeSharingTrainData, aes(temp, cnt)) 
 g + geom_point()
 ```
@@ -71,14 +70,12 @@ g + geom_point()
 Inspect if with extreme feeling temperature do we observe reduced count.
 
 ```{r}
-#Scatter plot of atemp with cnt, registered, casual
 g <-  ggplot(bikeSharingTrainData, aes(atemp, cnt)) 
 g + geom_point()
 ```
 
 Inspect if we find more count in other seasons compared to winter.
 ```{r}
-#Boxplot of cnt by season
 g <- ggplot(bikeSharingTrainData, aes(season, cnt))
 g + geom_boxplot(fill="white") +
   geom_jitter(size=1.5, alpha=0.2, aes(col=season)) +
@@ -87,7 +84,6 @@ g + geom_boxplot(fill="white") +
 
 Do we see less count in extreme weather?
 ```{r}
-#Boxplot of cnt by weathersit
 g <- ggplot(bikeSharingTrainData, aes(weathersit, cnt))
 g + geom_boxplot(fill="grey") +
   geom_jitter(size=1.5, alpha=0.2, aes(col=weathersit)) +
@@ -96,7 +92,6 @@ g + geom_boxplot(fill="grey") +
 
 Are cnt going up year by year?
 ```{r}
-#BarPlot of cnt, casual & registered by year 
 g <- ggplot(bikeSharingTrainData,aes(registered, cnt, fill = yr))
 g + geom_bar(position = "dodge", stat = "identity") +
   labs(title="Barplot for Year")
@@ -104,7 +99,6 @@ g + geom_bar(position = "dodge", stat = "identity") +
 
 Are more regsitered counts higher in working day?
 ```{r}
-#Bar of cnt, registered & casual by workingday
 g <- ggplot(bikeSharingTrainData,aes(workingday,registered, fill=yr))
 g + geom_bar(position = "dodge", stat = "identity") +
   labs(title="Barplot for Registered Users vs Working Day")
@@ -112,7 +106,6 @@ g + geom_bar(position = "dodge", stat = "identity") +
 
 Are more casual counts higher in working day?
 ```{r}
-#Bar of cnt, registered & casual by holiday
 g <- ggplot(bikeSharingTrainData,aes(workingday,casual, fill=yr))
 g + geom_bar(position = "dodge", stat = "identity")+
   labs(title="Barplot for Casual Users vs Working Day")
@@ -120,41 +113,35 @@ g + geom_bar(position = "dodge", stat = "identity")+
 
 With extreme humidity do we observe less count?
 ```{r}
-#Scatter plot of hum with cnt
 g <-  ggplot(bikeSharingTrainData, aes(hum, cnt)) 
 g + geom_point() +
   labs(title="ScattePlot for Humidity vs Count")
 ```
 With extreme windspeed do we observe less count?
 ```{r}
-#Scatter plot of windspeed with cnt
 g <-  ggplot(bikeSharingTrainData, aes(windspeed, cnt)) 
 g + geom_point()
 
 ```
 Are counts increasing for seasons year over year?
 ```{r}
-# Contingency Table for year and season
 tbl <- table(bikeSharingData$yr, bikeSharingData$season)
 kable(tbl, caption = "Year and Season Information") %>% kable_styling()
 ```
 
 Is there any variation with extreme weather across seasons?
 ```{r}
-# Contingency Table for weathersit and season
 tbl <- table(bikeSharingData$weathersit, bikeSharingData$season)
 kable(tbl, caption = "Weathersit and Season Information") %>% kable_styling()
 ```
 Are number of holidays same across years?
 ```{r}
-# Contingency Table for yr and holiday
 tbl <- table(bikeSharingData$yr, bikeSharingData$holiday)
 kable(tbl, caption = "Year and Holiday Information") %>% kable_styling()
 ```
 
-Inspect summary status of Cnt, Casual and Registered and see if for a given weekday proportion of casula and registered varies.
+Inspect summary status of Cnt, Casual and Registered and see if for a given weekday proportion of casual and registered varies.
 ```{r}
-# Bike Rental Counts per year
 kable(apply(bikeSharingData[13:15], 2, summary), caption = paste("Summary of Cnt, Casual & Registered"), digit = 1)%>% kable_styling()
 
 
@@ -213,7 +200,6 @@ rfFit <- train( formula ,
                 data=bikeSharingTrainData,
                 method="rf",
                 trControl = trainControl(method="repeatedcv", number=10),
-                #preProcess= c("center","scale"),
                 tuneGrid = data.frame(mtry = 1:20))
 rfpred <- predict(rfFit, newdata = bikeSharingTestData)
 results <- rbind(results, postResample(rfpred, bikeSharingTestData$cnt)[1])
@@ -223,9 +209,6 @@ mlrFit <- lm(cnt ~ season + yr + weathersit + hum + windspeed + atemp , data=bik
 
 pred <- predict(mlrFit, bikeSharingTestData)
 results <- rbind(results,sqrt(mean((bikeSharingTestData$cnt - pred)^2)))
-
-#rownames(results) <- c("Radom Forest",  "MLR 1")
-#colnames(results) <- c("RMSE")
 
 ```
 
@@ -255,16 +238,12 @@ boostPred <- predict(boostFit, newdata = bikeSharingTestData)
 results <- rbind(results, postResample(boostPred, bikeSharingTestData$cnt)[1])
 
 
-#MLR2 Fit
-#mlrFit2 <- lm(cnt ~ weathersit + season + I(atemp**2) + I(hum**2) + I(windspeed**2) + yr, data=bikeSharingTrainData)
-
 mlrFit2 <- lm(cnt ~ weathersit + season*yr + atemp + hum + windspeed, data=bikeSharingTrainData)
 
-colnames(bikeSharingTrainData)
 mlrPred <- predict(mlrFit2, bikeSharingTestData)
 results <- rbind(results,sqrt(mean((bikeSharingTestData$cnt - mlrPred)^2)))
 
-rownames(results) <- c("Radom Forest",  "MLR 1", "Boosted Tree",  "MLR 2")
+rownames(results) <- c("Random Forest",  "MLR 1", "Boosted Tree",  "MLR 2")
 colnames(results) <- c("RMSE")
 results
 
