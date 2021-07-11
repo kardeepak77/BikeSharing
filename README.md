@@ -11,15 +11,15 @@ The purpose of this repository is to store **Bike Sharing Project** relevant fil
 - library(caret)
 - library(Metrics)
 - library(gbm)
+- library(kableExtra)
 
 
 # Code to create reports for each day of the week. 
 ```markdown
-weekday <- c("Monday.html", "Tuesday.html", "Wednesday.html", "Thursday.html", "Friday.html", "Saturday.html", "Sunday.html")
+weekday <- c("Sunday.md", "Monday.md", "Tuesday.md", "Wednesday.md", "Thursday.md", "Friday.md", "Saturday.md")
 
-for(i in 1:length(weekday)) {
-  rmarkdown::render("weeklyAnalysis.Rmd", output_file = weekday[i], 
-                  params = list(dayOfTheWeek = i))
+for(i in 0:(length(weekday)-1)) {
+  rmarkdown::render("weeklyAnalysis.Rmd", output_file = weekday[i+1], params = list(dayOfTheWeek = i))
 }
 ```
 
@@ -27,17 +27,17 @@ for(i in 1:length(weekday)) {
 
 # Reports for each day are as below:
 
-- [Monday is available here](MondayAnalysis.md)
+- The analysis for [Monday is available here](MondayAnalysis.md)
 
-- [Tuesday is available here](TuesdayAnalysis.md)
+- The analysis for [Tuesday is available here](TuesdayAnalysis.md)
 
-- [Wednesday is available here](WednesdayAnalysis.md)
+- The analysis for [Wednesday is available here](WednesdayAnalysis.md)
 
-- [Thursday is available here](ThursdayAnalysis.md)
+- The analysis for [Thursday is available here](ThursdayAnalysis.md)
 
-- [Friday is available here](FridayAnalysis.md)
+- The analysis for [Friday is available here](FridayAnalysis.md)
 
-- [Saturday is available here](SaturdayAnalysis.md)
+- The analysis for [Saturday is available here](SaturdayAnalysis.md)
 
-- [Sunday is available here](SundayAnalysis.md)
+- The analysis for [Sunday is available here](SundayAnalysis.md)
  
